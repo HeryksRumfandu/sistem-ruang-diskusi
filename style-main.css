@@ -227,6 +227,7 @@ body.landing-body {
 
 .login-guest-btn {
   width: 100%;
+  display: inline-block;
 }
 
 @media (max-width: 480px) {
