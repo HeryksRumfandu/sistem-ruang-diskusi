@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login – Sistem Reservasi Ruang Diskusi</title>
+  <link rel="stylesheet" href="css/style-main.css">
+</head>
+<body class="landing-body">
+
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-logo-oval">
+        <img src="assets/logo-ugmkrd.png" alt="Logo Universitas Gajah Mungkur">
+      </div>
+      <div class="login-title-block">
+        <div class="login-app-name">Sistem Reservasi Ruang Diskusi</div>
+        <div class="login-univ-name">Universitas Gajah Mungkur</div>
+      </div>
+    </div>
+
+    <form id="form-login" class="login-form">
+      <label class="login-label" for="role">Masuk sebagai</label>
+      <select id="role" class="login-input">
+        <option value="mahasiswa">Mahasiswa / Dosen</option>
+        <option value="admin">Admin / Petugas</option>
+      </select>
+
+      <label class="login-label" for="email">Email institusi</label>
+      <input id="email" class="login-input" type="email" placeholder="nama@ugmkrd.ac.id">
+
+      <label class="login-label" for="password">Kata sandi</label>
+      <input id="password" class="login-input" type="password" placeholder="••••••••">
+
+      <button type="submit" class="btn-primary login-btn">
+        Masuk
+      </button>
+
+      <div class="login-small-link">
+        Halaman ini hanya mockup. Kredensial tidak benar‑benar dikirim ke server.
+      </div>
+    </form>
+
+    <hr class="login-divider">
+
+    <div class="login-guest-section">
+      <div class="login-guest-text">
+        Atau langsung buka contoh tampilan tanpa login nyata:
+      </div>
+      <a href="mahasiswa-dashboard.html" class="btn-secondary login-guest-btn">
+        Buka Dashboard Mahasiswa (Mockup)
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Login mockup: hanya mengarahkan ke dashboard sesuai peran
+  document.getElementById('form-login').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const role = document.getElementById('role').value;
+
+    if (role === 'mahasiswa') {
+      window.location.href = 'mahasiswa-dashboard.html';
+    } else {
+      // nanti diarahkan ke admin-dashboard.html
+      window.location.href = 'admin-dashboard.html';
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Mahasiswa – Sistem Reservasi Ruang Diskusi</title>
+  <link rel="stylesheet" href="css/style-main.css">
+</head>
+<body class="app-body">
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <div class="app-logo-block">
+      <div class="login-logo-oval">
+        <img src="assets/logo-ugmkrd.png" alt="Logo Universitas Gajah Mungkur">
+      </div>
+      <div class="app-logo-text">
+        <div class="app-name">Sistem Reservasi Ruang Diskusi</div>
+        <div class="app-univ">Universitas Gajah Mungkur</div>
+      </div>
+    </div>
+
+    <div class="app-menu">
+      <div class="app-menu-title">Mahasiswa / Dosen</div>
+      <button class="app-menu-item active" data-page="home">Ajukan Reservasi</button>
+      <button class="app-menu-item" data-page="calendar">Kalender Ruang</button>
+      <button class="app-menu-item" data-page="mybookings">Reservasi Saya</button>
+    </div>
+
+    <div class="app-user-box">
+      Masuk sebagai<br>
+      <strong>Satria Wijaya (Mahasiswa)</strong>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="app-main">
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div>
+        <div class="app-topbar-title" id="topbar-title">Ajukan Reservasi</div>
+        <div class="app-topbar-sub" id="topbar-sub">
+          Pilih ruang yang sesuai kemudian ajukan reservasi berdasarkan kebutuhan kegiatan Anda.
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="app-content">
+
+      <!-- HALAMAN 1: Ajukan Reservasi -->
+      <section id="page-home" class="page active">
+        <section class="two-columns">
+          <!-- Kiri: Daftar ruang -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Daftar Ruang Diskusi</div>
+                <div class="card-sub">
+                  Informasi ruang diskusi beserta lokasi, kapasitas, dan status penggunaan pada hari ini.
+                </div>
+              </div>
+            </div>
+            <table id="rooms-table">
+              <thead>
+              <tr>
+                <th>Nama Ruang</th>
+                <th>Lokasi</th>
+                <th>Kapasitas</th>
+                <th>Status Hari Ini</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr data-room="Ruang Diskusi 1" data-status="sedang">
+                <td>Ruang Diskusi 1</td>
+                <td>Perpustakaan Lantai 2</td>
+                <td>8 orang</td>
+                <td>
+                  <span class="badge-status status-sedang">
+                    Sedang digunakan 10.00–12.00
+                  </span>
+                </td>
+              </tr>
+              <tr data-room="Ruang Diskusi 2" data-status="dipesan">
+                <td>Ruang Diskusi 2</td>
+                <td>Perpustakaan Lantai 2</td>
+                <td>6 orang</td>
+                <td>
+                  <span class="badge-status status-menunggu">
+                    Telah dipesan 13.00–15.00
+                  </span>
+                </td>
+              </tr>
+              <tr data-room="Ruang Diskusi 3" data-status="tersedia">
+                <td>Ruang Diskusi 3</td>
+                <td>Perpustakaan Lantai 3</td>
+                <td>10 orang</td>
+                <td>
+                  <span class="badge-status status-disetujui">
+                    Tersedia dengan banyak jadwal kosong
+                  </span>
+                </td>
+              </tr>
+              <tr data-room="Ruang Diskusi 4" data-status="tersedia">
+                <td>Ruang Diskusi 4</td>
+                <td>Gedung Hukum Lantai 1</td>
+                <td>12 orang</td>
+                <td>
+                  <span class="badge-status status-disetujui">
+                    Tersedia
+                  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Kanan: Ringkasan + Form -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title" id="selected-room-title">
+                  Ringkasan Jadwal & Formulir Pengajuan
+                </div>
+                <div class="card-sub" id="selected-room-sub">
+                  Pilih ruang di sebelah kiri untuk melihat ringkasan jadwal dan mengisi formulir pengajuan.
+                </div>
+              </div>
+            </div>
+
+            <!-- Alert feedback -->
+            <div id="alert-box" class="alert-box" hidden></div>
+
+            <!-- Mini Kalender -->
+            <div id="mini-calendar-wrapper" class="mini-calendar" hidden>
+              <div class="mini-calendar-title">Ringkasan Jadwal Hari Ini</div>
+              <div class="mini-calendar-row">
+                <div class="mini-slot slot-tersedia">08.00–10.00</div>
+                <div class="mini-slot slot-terisi">10.00–12.00</div>
+                <div class="mini-slot slot-terisi-merah">13.00–15.00</div>
+                <div class="mini-slot slot-tersedia">15.00–17.00</div>
+              </div>
+              <div class="small-muted">
+                Hijau menunjukkan jadwal yang masih tersedia, warna oranye menandakan jadwal yang telah dipesan,
+                sedangkan warna merah tua menandakan jadwal yang sedang digunakan pada saat ini.
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form id="form-reservasi">
+              <div class="form-group">
+                <label for="nama_pemohon">Nama Pemohon</label>
+                <input type="text" id="nama_pemohon" class="form-input" placeholder="Contoh: Satria Wijaya">
+              </div>
+              <div class="form-group">
+                <label for="identitas">NPM / NIP</label>
+                <input type="text" id="identitas" class="form-input" placeholder="Contoh: 2301XXXX">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input type="date" id="tanggal" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label for="jam_mulai">Jam Mulai</label>
+                  <input type="time" id="jam_mulai" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label for="jam_selesai">Jam Selesai</label>
+                  <input type="time" id="jam_selesai" class="form-input">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="jumlah_peserta">Jumlah Peserta</label>
+                  <input type="number" id="jumlah_peserta" class="form-input" min="1" placeholder="Contoh: 6">
+                </div>
+                <div class="form-group">
+                  <label for="tujuan">Tujuan Penggunaan</label>
+                  <select id="tujuan" class="form-input">
+                    <option value="">Pilih tujuan...</option>
+                    <option>Diskusi tugas perkuliahan</option>
+                    <option>Persiapan presentasi</option>
+                    <option>Latihan sidang semu</option>
+                    <option>Konsultasi tugas akhir</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="catatan">Catatan Tambahan (opsional)</label>
+                <textarea id="catatan" class="form-input" rows="3"
+                          placeholder="Contoh: Memerlukan proyektor dan koneksi internet yang stabil."></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="button" id="btn-ajukan" class="btn-primary form-submit-btn">
+                  AJUKAN RESERVASI
+                </button>
+                <div class="small-muted">
+                  Pengajuan ini bersifat simulasi untuk keperluan mockup. Pada sistem sebenarnya, data akan diteruskan
+                  kepada petugas administrasi dan notifikasi akan dikirim melalui email institusi.
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </section>
+
+      <!-- HALAMAN 2: Kalender Ruang -->
+      <section id="page-calendar" class="page">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Kalender Ruang</div>
+              <div class="card-sub">
+                Pilih rentang waktu untuk melihat ringkasan jadwal penggunaan ruang diskusi.
+              </div>
+            </div>
+            <div>
+              <select id="range-select" class="form-input" style="min-width: 170px;">
+                <option value="today">Hari ini</option>
+                <option value="week">7 hari ke depan</option>
+                <option value="month">Bulan ini</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="small-muted" id="range-caption">
+            Menampilkan jadwal penggunaan ruang diskusi untuk hari ini.
+          </div>
+
+          <table class="calendar-table">
+            <thead>
+            <tr>
+              <th>Tanggal / Jam</th>
+              <th>Ruang Diskusi 1</th>
+              <th>Ruang Diskusi 2</th>
+              <th>Ruang Diskusi 3</th>
+              <th>Ruang Diskusi 4</th>
+            </tr>
+            </thead>
+            <tbody id="calendar-body">
+            <!-- konten diisi via JavaScript -->
+            </tbody>
+          </table>
+
+          <p class="small-muted" style="margin-top:8px;">
+            Untuk memilih tanggal pengajuan, tekan salah satu tanggal pada kolom pertama.
+            Sistem akan mengarahkan kembali ke formulir pengajuan dengan tanggal tersebut sudah terisi.
+          </p>
+        </div>
+      </section>
+
+      <!-- HALAMAN 3: Reservasi Saya -->
+      <section id="page-mybookings" class="page">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Reservasi Saya</div>
+              <div class="card-sub">
+                Daftar reservasi yang diajukan oleh Satria Wijaya sebagai contoh persona mahasiswa.
+              </div>
+            </div>
+          </div>
+          <ul class="timeline" id="timeline-reservasi">
+            <li class="timeline-item"
+                data-status="Disetujui"
+                data-tanggal="2026-06-05"
+                data-jam-mulai="10:00">
+              <div>
+                <div class="timeline-main">
+                  Ruang Diskusi 1 • 2026-06-05 • 10.00–12.00
+                </div>
+                <div class="timeline-sub">
+                  Diskusi tugas Hukum Pidana —
+                  <span class="label-status label-disetujui">Disetujui</span>
+                </div>
+              </div>
+              <div class="timeline-actions">
+                <button type="button" class="btn-secondary btn-hapus">
+                  Hapus
+                </button>
+              </div>
+            </li>
+
+            <li class="timeline-item"
+                data-status="No-show"
+                data-tanggal="2026-06-03"
+                data-jam-mulai="13:00">
+              <div>
+                <div class="timeline-main">
+                  Ruang Diskusi 2 • 2026-06-03 • 13.00–15.00
+                </div>
+                <div class="timeline-sub">
+                  Persiapan presentasi kelompok —
+                  <span class="label-status label-noshow">No-show</span>
+                </div>
+              </div>
+              <div class="timeline-actions">
+                <button type="button" class="btn-secondary btn-hapus">
+                  Hapus
+                </button>
+              </div>
+            </li>
+
+            <li class="timeline-item"
+                data-status="Menunggu"
+                data-tanggal="2026-06-20"
+                data-jam-mulai="15:00">
+              <div>
+                <div class="timeline-main">
+                  Ruang Diskusi 3 • 2026-06-20 • 15.00–17.00
+                </div>
+                <div class="timeline-sub">
+                  Latihan sidang semu —
+                  <span class="label-status label-menunggu">Menunggu persetujuan</span>
+                </div>
+              </div>
+              <div class="timeline-actions">
+                <button type="button" class="btn-secondary btn-batal">
+                  Batalkan
+                </button>
+              </div>
+            </li>
+          </ul>
+          <p class="small-muted" style="margin-top:8px;">
+            Pembatalan hanya dapat dilakukan untuk reservasi berstatus
+            <strong>Menunggu persetujuan</strong> dan maksimal satu jam sebelum waktu mulai.
+            Reservasi yang telah disetujui tidak dapat dibatalkan melalui sistem ini.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  // ===============================
+  // Navigasi menu sidebar
+  // ===============================
+  const menuItems = document.querySelectorAll('.app-menu-item');
+  const pages = document.querySelectorAll('.page');
+  const topbarTitle = document.getElementById('topbar-title');
+  const topbarSub = document.getElementById('topbar-sub');
+
+  menuItems.forEach(btn => {
+    btn.addEventListener('click', () => {
+      menuItems.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const page = btn.getAttribute('data-page'); // home / calendar / mybookings
+
+      pages.forEach(p => {
+        p.classList.remove('active');
+        if (p.id === 'page-' + page) p.classList.add('active');
+      });
+
+      if (page === 'home') {
+        topbarTitle.textContent = 'Ajukan Reservasi';
+        topbarSub.textContent =
+          'Pilih ruang yang sesuai kemudian ajukan reservasi berdasarkan kebutuhan kegiatan Anda.';
+      } else if (page === 'calendar') {
+        topbarTitle.textContent = 'Kalender Ruang';
+        topbarSub.textContent =
+          'Tinjau jadwal penggunaan ruang dan pilih tanggal yang sesuai sebelum mengajukan reservasi.';
+      } else {
+        topbarTitle.textContent = 'Reservasi Saya';
+        topbarSub.textContent =
+          'Pantau status reservasi dan kelola pembatalan sesuai ketentuan yang berlaku.';
+      }
+    });
+  });
+
+  // ===============================
+  // Ajukan Reservasi: pilih ruang
+  // ===============================
+  const rows = document.querySelectorAll('#rooms-table tbody tr');
+  const selectedTitle = document.getElementById('selected-room-title');
+  const selectedSub = document.getElementById('selected-room-sub');
+  const miniCal = document.getElementById('mini-calendar-wrapper');
+  const alertBox = document.getElementById('alert-box');
+  let selectedRoomName = '';
+
+  function showAlert(message, type = 'info') {
+    alertBox.textContent = message;
+    alertBox.className = 'alert-box ' + 'alert-' + type;
+    alertBox.hidden = false;
+  }
+
+  function clearAlert() {
+    alertBox.hidden = true;
+  }
+
+  rows.forEach(row => {
+    row.addEventListener('click', () => {
+      const roomName = row.getAttribute('data-room');
+      const status = row.getAttribute('data-status'); // sedang / dipesan / tersedia
+
+      // Reset highlight
+      rows.forEach(r => r.classList.remove('selected-row', 'selected-row-merah'));
+
+      if (status === 'sedang') {
+        // Ruang sedang digunakan
+        showAlert(
+          'Ruang ini sedang digunakan pada rentang waktu tertentu. ' +
+          'Silakan memilih ruang lain atau mengajukan pada jam yang berbeda.',
+          'warning'
+        );
+        row.classList.add('selected-row-merah');
+        selectedRoomName = '';
+        miniCal.hidden = true;
+        return;
+      }
+
+      // Ruang dipesan sebagian hari, masih boleh dipilih dengan perhatian
+      if (status === 'dipesan') {
+        showAlert(
+          'Sebagian jadwal ruang ini telah dipesan. ' +
+          'Silakan memperhatikan jadwal pada ringkasan sebelum mengajukan reservasi.',
+          'info'
+        );
+      } else {
+        clearAlert();
+      }
+
+      selectedRoomName = roomName;
+      selectedTitle.textContent = 'Ringkasan Jadwal & Formulir – ' + roomName;
+      selectedSub.textContent =
+        'Silakan mengisi tanggal, jam, dan tujuan penggunaan untuk mengajukan reservasi ' + roomName + '.';
+      miniCal.hidden = false;
+
+      row.classList.add('selected-row');
+      const namaField = document.getElementById('nama_pemohon');
+      if (namaField) namaField.focus();
+    });
+  });
+
+  // ===============================
+  // Ajukan Reservasi: tombol dinamis + tambah ke Reservasi Saya
+  // ===============================
+  const btnAjukan = document.getElementById('btn-ajukan');
+  const form = document.getElementById('form-reservasi');
+
+  btnAjukan.addEventListener('click', () => {
+    clearAlert();
+
+    if (!selectedRoomName) {
+      alert('Silakan memilih ruang diskusi terlebih dahulu pada tabel di sebelah kiri.');
+      return;
+    }
+
+    const nama = document.getElementById('nama_pemohon').value.trim();
+    const identitas = document.getElementById('identitas').value.trim();
+    const tanggal = document.getElementById('tanggal').value;
+    const jamMulai = document.getElementById('jam_mulai').value;
+    const jamSelesai = document.getElementById('jam_selesai').value;
+    const jumlah = document.getElementById('jumlah_peserta').value;
+    const tujuan = document.getElementById('tujuan').value;
+
+    if (!nama || !identitas || !tanggal || !jamMulai || !jamSelesai || !jumlah || !tujuan) {
+      showAlert('Mohon melengkapi seluruh isian wajib pada formulir pengajuan.', 'warning');
+      return;
+    }
+
+    // Simulasi loading
+    btnAjukan.disabled = true;
+    const originalText = btnAjukan.textContent;
+    btnAjukan.textContent = 'Mengirim...';
+
+    setTimeout(() => {
+      btnAjukan.disabled = false;
+      btnAjukan.textContent = originalText;
+
+      const timelineList = document.getElementById('timeline-reservasi');
+      if (timelineList) {
+        const li = document.createElement('li');
+        li.className = 'timeline-item';
+        li.dataset.status = 'Menunggu';
+        li.dataset.tanggal = tanggal;
+        li.dataset.jamMulai = jamMulai;
+
+        li.innerHTML = `
+          <div>
+            <div class="timeline-main">
+              ${selectedRoomName} • ${tanggal} • ${jamMulai}–${jamSelesai}
+            </div>
+            <div class="timeline-sub">
+              ${tujuan} —
+              <span class="label-status label-menunggu">Menunggu persetujuan</span>
+            </div>
+          </div>
+          <div class="timeline-actions">
+            <button type="button" class="btn-secondary btn-batal">
+              Batalkan
+            </button>
+          </div>
+        `;
+
+        timelineList.appendChild(li);
+        attachHandlersForItem(li);
+      }
+
+      // Update status ruang yang baru diajukan (simulasi)
+      rows.forEach(r => {
+        if (r.getAttribute('data-room') === selectedRoomName) {
+          r.setAttribute('data-status', 'dipesan');
+          const badge = r.querySelector('.badge-status');
+          if (badge) {
+            badge.textContent = 'Ada pengajuan baru (menunggu)';
+            badge.className = 'badge-status status-menunggu';
+          }
+        }
+      });
+
+      showAlert(
+        'Pengajuan reservasi telah dikirim sebagai simulasi. ' +
+        'Silakan menunggu pemberitahuan lebih lanjut dari petugas administrasi.',
+        'success'
+      );
+
+      form.reset();
+      selectedRoomName = '';
+      miniCal.hidden = true;
+    }, 800);
+  });
+
+  // ===============================
+  // Kalender Ruang: dropdown & isi tabel dinamis
+  // ===============================
+  const rangeSelect = document.getElementById('range-select');
+  const rangeCaption = document.getElementById('range-caption');
+  const calendarBody = document.getElementById('calendar-body');
+
+  const calendarData = {
+    today: [
+      {
+        label: 'Hari ini • 08.00–10.00',
+        tanggal: '2026-06-13',
+        clickable: true,
+        r1: 'Kosong',
+        r1Status: 'disetujui',
+        r2: 'Kosong',
+        r2Status: 'disetujui',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      },
+      {
+        label: 'Hari ini • 10.00–12.00',
+        tanggal: '',
+        clickable: false,
+        r1: 'Sedang digunakan',
+        r1Status: 'sedang',
+        r2: 'Kosong',
+        r2Status: 'disetujui',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      },
+      {
+        label: 'Hari ini • 13.00–15.00',
+        tanggal: '',
+        clickable: false,
+        r1: 'Kosong',
+        r1Status: 'disetujui',
+        r2: 'Telah dipesan',
+        r2Status: 'menunggu',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      }
+    ],
+    week: [
+      {
+        label: 'Senin, 15 Jun 2026 • 08.00–10.00',
+        tanggal: '2026-06-15',
+        clickable: true,
+        r1: 'Kosong',
+        r1Status: 'disetujui',
+        r2: 'Kosong',
+        r2Status: 'disetujui',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      },
+      {
+        label: 'Rabu, 17 Jun 2026 • 13.00–15.00',
+        tanggal: '2026-06-17',
+        clickable: true,
+        r1: 'Kosong',
+        r1Status: 'disetujui',
+        r2: 'Kelompok Pidana',
+        r2Status: 'menunggu',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      },
+      {
+        label: 'Jumat, 19 Jun 2026 • 15.00–17.00',
+        tanggal: '2026-06-19',
+        clickable: true,
+        r1: 'Kosong',
+        r1Status: 'disetujui',
+        r2: 'Kosong',
+        r2Status: 'disetujui',
+        r3: 'Sidang semu',
+        r3Status: 'menunggu',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      }
+    ],
+    month: [
+      {
+        label: 'Minggu ke‑1 Bulan Ini',
+        tanggal: '',
+        clickable: false,
+        r1: 'Padat siang hari',
+        r1Status: 'menunggu',
+        r2: 'Cukup longgar',
+        r2Status: 'disetujui',
+        r3: 'Beberapa no-show',
+        r3Status: 'noshow',
+        r4: 'Kosong sebagian besar',
+        r4Status: 'disetujui'
+      },
+      {
+        label: 'Minggu ke‑2 Bulan Ini',
+        tanggal: '',
+        clickable: false,
+        r1: 'Cenderung penuh',
+        r1Status: 'sedang',
+        r2: 'Padat pagi',
+        r2Status: 'menunggu',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      },
+      {
+        label: 'Minggu ke‑3 Bulan Ini',
+        tanggal: '',
+        clickable: false,
+        r1: 'Kosong',
+        r1Status: 'disetujui',
+        r2: 'Kosong',
+        r2Status: 'disetujui',
+        r3: 'Kosong',
+        r3Status: 'disetujui',
+        r4: 'Kosong',
+        r4Status: 'disetujui'
+      }
+    ]
+  };
+
+  function makeStatusBadge(text, statusKey) {
+    let cls = 'status-disetujui';
+    if (statusKey === 'sedang') cls = 'status-sedang';
+    if (statusKey === 'menunggu') cls = 'status-menunggu';
+    if (statusKey === 'noshow') cls = 'status-noshow';
+    return '<span class="badge-status ' + cls + '">' + text + '</span>';
+  }
+
+  function renderCalendar(rangeKey) {
+    const rowsData = calendarData[rangeKey];
+    calendarBody.innerHTML = '';
+
+    rowsData.forEach(row => {
+      const tr = document.createElement('tr');
+
+      const tdLabel = document.createElement('td');
+      if (row.clickable && row.tanggal) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'calendar-date';
+        btn.setAttribute('data-tanggal', row.tanggal);
+        btn.textContent = row.label;
+
+        btn.addEventListener('click', () => {
+          const tanggal = btn.getAttribute('data-tanggal');
+          const formTanggal = document.getElementById('tanggal');
+          if (formTanggal) formTanggal.value = tanggal;
+
+          pages.forEach(p => p.classList.remove('active'));
+          document.getElementById('page-home').classList.add('active');
+
+          menuItems.forEach(m => m.classList.remove('active'));
+          document.querySelector('.app-menu-item[data-page="home"]').classList.add('active');
+
+          topbarTitle.textContent = 'Ajukan Reservasi';
+          topbarSub.textContent =
+            'Pilih ruang yang sesuai kemudian ajukan reservasi berdasarkan kebutuhan kegiatan Anda.';
+
+          const jamMulai = document.getElementById('jam_mulai');
+          if (jamMulai) jamMulai.focus();
+
+          showAlert(
+            'Tanggal pada formulir telah disesuaikan dengan pilihan Anda di menu Kalender Ruang.',
+            'info'
+          );
+        });
+
+        tdLabel.appendChild(btn);
+      } else {
+        tdLabel.textContent = row.label;
+      }
+      tr.appendChild(tdLabel);
+
+      const tdR1 = document.createElement('td');
+      tdR1.innerHTML = makeStatusBadge(row.r1, row.r1Status);
+      tr.appendChild(tdR1);
+
+      const tdR2 = document.createElement('td');
+      tdR2.innerHTML = makeStatusBadge(row.r2, row.r2Status);
+      tr.appendChild(tdR2);
+
+      const tdR3 = document.createElement('td');
+      tdR3.innerHTML = makeStatusBadge(row.r3, row.r3Status);
+      tr.appendChild(tdR3);
+
+      const tdR4 = document.createElement('td');
+      tdR4.innerHTML = makeStatusBadge(row.r4, row.r4Status);
+      tr.appendChild(tdR4);
+
+      calendarBody.appendChild(tr);
+    });
+  }
+
+  rangeSelect.addEventListener('change', () => {
+    const value = rangeSelect.value;
+    if (value === 'today') {
+      rangeCaption.textContent = 'Menampilkan jadwal penggunaan ruang diskusi untuk hari ini.';
+    } else if (value === 'week') {
+      rangeCaption.textContent = 'Menampilkan ringkasan jadwal penggunaan ruang diskusi untuk tujuh hari ke depan.';
+    } else {
+      rangeCaption.textContent = 'Menampilkan ringkasan jadwal penggunaan ruang diskusi untuk bulan ini.';
+    }
+    renderCalendar(value);
+  });
+
+  renderCalendar('today');
+
+  // ===============================
+  // Reservasi Saya: Batalkan + Hapus
+  // ===============================
+  const timeline = document.getElementById('timeline-reservasi');
+
+  function canCancel(item) {
+    const status = item.dataset.status;
+    if (status !== 'Menunggu') {
+      alert('Reservasi ini tidak dapat dibatalkan karena tidak berstatus "Menunggu persetujuan".');
+      return false;
+    }
+
+    const tanggalStr = item.dataset.tanggal;
+    const jamMulaiStr = item.dataset.jamMulai;
+
+    if (!tanggalStr || !jamMulaiStr) return true;
+
+    const now = new Date();
+    const mulai = new Date(tanggalStr + 'T' + jamMulaiStr + ':00');
+
+    const selisihMs = mulai - now;
+    const satuJamMs = 60 * 60 * 1000;
+
+    if (selisihMs < satuJamMs) {
+      alert('Reservasi hanya dapat dibatalkan maksimal satu jam sebelum waktu mulai.');
+      return false;
+    }
+    return true;
+  }
+
+  function attachHandlersForItem(li) {
+    const btnBatal = li.querySelector('.btn-batal');
+    const btnHapus = li.querySelector('.btn-hapus');
+
+    if (btnBatal) {
+      btnBatal.addEventListener('click', () => {
+        if (!canCancel(li)) return;
+        if (!confirm('Apakah Anda yakin ingin membatalkan reservasi ini?')) return;
+
+        li.dataset.status = 'Dibatalkan';
+        const label = li.querySelector('.label-status');
+        if (label) {
+          label.textContent = 'Dibatalkan oleh pengguna';
+          label.className = 'label-status label-dibatalkan';
+        }
+        li.querySelector('.timeline-actions').innerHTML =
+          '<span class="small-muted">Dibatalkan</span>';
+      });
+    }
+
+    if (btnHapus) {
+      btnHapus.addEventListener('click', () => {
+        if (!confirm('Hapus reservasi ini dari daftar riwayat di tampilan Anda?')) return;
+        li.remove();
+      });
+    }
+  }
+
+  document.querySelectorAll('#timeline-reservasi .timeline-item')
+    .forEach(attachHandlersForItem);
+</script>
+</body>
+</html>

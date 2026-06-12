@@ -1,0 +1,646 @@
+:root {
+  --primary: #E65100;
+  --primary-soft: #FFF3E0;
+  --primary-dark: #BF360C;
+  --bg: #FFF8F2;
+  --surface: #FFFFFF;
+  --border: #E0E0E0;
+  --text-main: #212121;
+  --text-muted: #757575;
+  --success: #2E7D32;
+  --warning: #F9A825;
+  --danger: #C62828;
+}
+
+/* ===== Global ===== */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--text-main);
+}
+
+/* ===== Background login / landing ===== */
+body.landing-body {
+  background: linear-gradient(135deg, #FFB74D, #F57C00);
+}
+
+/* ===== Tombol umum ===== */
+.btn-primary,
+.btn-secondary {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+  color: #FFFFFF;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  border: none;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.28);
+}
+
+.btn-secondary {
+  background: #ECEFF1;
+  color: #263238;
+  border: 1px solid #B0BEC5;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+}
+
+.btn-secondary:hover {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.16);
+}
+
+/* ===== Landing (opsional) ===== */
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.landing-container h1 {
+  font-size: 28px;
+  margin-bottom: 4px;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.landing-container h2 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #4E342E;
+  font-weight: 600;
+}
+
+.landing-container p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.landing-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ===== Layout login ===== */
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 380px;
+  max-width: 100%;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow:
+    0 16px 40px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(255,255,255,0.8);
+  padding: 26px 26px 22px;
+}
+
+/* Header login */
+.login-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+/* Logo oval */
+.login-logo-oval {
+  width: 140px;
+  height: 64px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.30);
+  overflow: hidden;
+}
+
+.login-logo-oval img {
+  width: 80%;
+  height: auto;
+  object-fit: contain;
+}
+
+.login-title-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-app-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4E342E;
+}
+
+.login-univ-name {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Form login */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.login-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4E342E;
+}
+
+.login-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 4px;
+  background-color: #FAFAFA;
+  transition: border-color 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 1px rgba(230,81,0,0.18);
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.login-small-link {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.login-divider {
+  margin: 18px 0 12px;
+  border: none;
+  border-top: 1px solid #EEEEEE;
+}
+
+.login-guest-section {
+  text-align: center;
+}
+
+.login-guest-text {
+  font-size: 12px;
+  color: #FBE9E7;
+  margin-bottom: 8px;
+}
+
+.login-guest-btn {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 20px 18px 18px;
+  }
+
+  .login-logo-oval {
+    width: 120px;
+    height: 56px;
+  }
+}
+
+/* ===================================== */
+/* ===== Layout aplikasi dashboard ===== */
+/* ===================================== */
+.app-body {
+  margin: 0;
+  background: #F5F5F5;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.app-sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #4E342E, #3E2723);
+  color: #FFFFFF;
+  padding: 18px 14px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-logo-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.app-logo-text .app-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.app-logo-text .app-univ {
+  font-size: 12px;
+  color: #FFCCBC;
+}
+
+.app-user-box {
+  margin-top: auto;
+  font-size: 13px;
+  color: #FFCCBC;
+}
+
+/* Menu sidebar */
+.app-menu {
+  margin-top: 8px;
+}
+
+.app-menu-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #FFCCBC;
+  margin-bottom: 6px;
+}
+
+.app-menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #FFE0B2;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.app-menu-item:hover {
+  background-color: rgba(255,255,255,0.10);
+}
+
+.app-menu-item.active {
+  background: linear-gradient(90deg, #FFFFFF, #FFE0B2);
+  color: #4E342E;
+  font-weight: 700;
+}
+
+/* Main area */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  background: linear-gradient(90deg, #FFFFFF, #FFF3E0);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+}
+
+.app-topbar-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.app-topbar-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.app-content {
+  padding: 16px 20px 24px;
+}
+
+/* Card & grid */
+.card {
+  background-color: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.card-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.card-title {
+  font-size:16px;
+  font-weight:700;
+  color:#4E342E;
+}
+
+.card-sub {
+  font-size:13px;
+  color:var(--text-muted);
+}
+
+.two-columns {
+  display:grid;
+  grid-template-columns: 2fr 1.4fr;
+  gap:16px;
+}
+
+/* Halaman dalam dashboard */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* Tabel */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+  color:#FFFFFF;
+}
+
+th, td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:nth-child(even) { background-color: #FFF3E0; }
+tbody tr:hover { background-color:#FFE0B2; cursor:pointer; }
+
+.calendar-table td {
+  text-align: center;
+}
+
+/* Status badge */
+.badge-status{
+  display:inline-block;
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  color:#FFFFFF;
+}
+
+.status-sedang{background:var(--danger);}
+.status-menunggu{background:#F9A825; color:#3E2723;}
+.status-disetujui{background:#2E7D32;}
+.status-noshow{background:#6D4C41;}
+
+/* Mini kalender */
+.mini-calendar {
+  font-size:13px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  padding:8px;
+  background-color:#FFFDF8;
+  margin-bottom:10px;
+}
+
+.mini-calendar-title {
+  font-weight:700;
+  margin-bottom:4px;
+  color:#4E342E;
+}
+
+.mini-calendar-row {
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:4px;
+}
+
+.mini-slot {
+  flex:1;
+  text-align:center;
+  margin:0 2px;
+  padding:3px 4px;
+  border-radius:4px;
+  font-weight:600;
+  font-size:12px;
+}
+
+.slot-terisi {
+  background:#FFCC80;
+  color:#3E2723;
+}
+
+.slot-terisi-merah{
+  background:#FF7043;
+  color:#FFFFFF;
+}
+
+.slot-tersedia {
+  background:#C8E6C9;
+  color:#1B5E20;
+}
+
+/* Alert box */
+.alert-box {
+  font-size:13px;
+  padding:8px 10px;
+  border-radius:6px;
+  margin-bottom:8px;
+}
+
+.alert-info {
+  background:#E3F2FD;
+  color:#1565C0;
+  border:1px solid #BBDEFB;
+}
+
+.alert-warning {
+  background:#FFF8E1;
+  color:#F57F17;
+  border:1px solid #FFECB3;
+}
+
+.alert-success {
+  background:#E8F5E9;
+  color:#2E7D32;
+  border:1px solid #C8E6C9;
+}
+
+/* Form */
+.form-group {
+  margin-bottom:8px;
+  font-size:14px;
+}
+
+.form-group label {
+  display:block;
+  margin-bottom:4px;
+  font-weight:600;
+  color:#4E342E;
+}
+
+.form-input {
+  width:100%;
+  padding:6px 8px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  font-size:14px;
+  font-family:inherit;
+}
+
+.form-row {
+  display:flex;
+  gap:8px;
+}
+
+.form-row .form-group { flex:1; }
+
+.form-actions {
+  margin-top:10px;
+}
+
+.form-submit-btn {
+  width: 100%;
+}
+
+/* Highlight baris ruang */
+.selected-row {
+  outline: 2px solid var(--primary);
+}
+
+.selected-row-merah{
+  outline: 2px solid var(--danger);
+}
+
+/* Kalender ruang: tombol tanggal */
+.calendar-date {
+  background:#FFFFFF;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:3px 10px;
+  font-size:13px;
+  cursor:pointer;
+  margin-bottom:4px;
+}
+
+.calendar-date:hover{
+  background:#FFF3E0;
+}
+
+/* Timeline (Reservasi Saya) */
+.timeline {
+  list-style:none;
+  margin:0;
+  padding:0;
+  font-size:14px;
+}
+
+.timeline-item {
+  padding:8px 0;
+  border-bottom:1px solid #F3E5F5;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:8px;
+}
+
+.timeline-main {
+  font-weight:600;
+  font-size:15px;
+}
+
+.timeline-sub {
+  font-size:14px;
+  color:var(--text-muted);
+}
+
+.timeline-actions {
+  white-space:nowrap;
+}
+
+/* Label status di Reservasi Saya */
+.label-status{
+  font-weight:700;
+}
+
+.label-disetujui{
+  color:var(--success);
+}
+
+.label-menunggu{
+  color:var(--text-muted);
+}
+
+.label-noshow{
+  color:#F57F17;
+}
+
+.label-dibatalkan{
+  color:#607D8B;
+}
+
+/* Teks kecil */
+.small-muted {
+  font-size:12px;
+  color:var(--text-muted);
+}
+
+/* Responsif dashboard */
+@media (max-width: 960px){
+  .two-columns{grid-template-columns:1fr;}
+}
+
+@media (max-width: 768px){
+  .app-layout{flex-direction:column;}
+  .app-sidebar{
+    width:100%;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .app-user-box{margin-top:0;}
+}
